@@ -19,8 +19,11 @@ const getNewItem = async () => {
                 handleError("No usable data response");
 
             const items = data.items.map(item => item.offer).filter(item => item !== undefined);
-            const hunt = groupBy('sale_type', items)['hunt'][0];
-            newOffer = hunt;
+            const hunts = groupBy('sale_type', items)['hunt'];
+
+            if (hunts === undefined || hunts.length === 0) return getNewItem();
+
+            newOffer = hunts[0];
 
             if (!updateStatus()) getNewItem();
         })
