@@ -1,13 +1,29 @@
 {
-    "name": "ibood-hunter",
-    "description": "get the ibood hunts in terminal",
-    "author": "Tjeu Foolen",
-    "version": "1.0",
-    "dependencies": {
-        "axios": "^0.21.4",
-        "colors": "0.6.0"
-    },
-    "scripts": {
-        "start": "node run.js"
-    }
+  "name": "iboodhunter",
+  "version": "1.0.0",
+  "description": "Simple terminal hunter which logs the offer when a new hunt is available",
+  "main": "run.js",
+  "scripts": {
+    "start": "node run.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tjeufoolen/iBOODHunter.git"
+  },
+  "keywords": [
+    "ibood",
+    "hunt",
+    "deals"
+  ],
+  "author": "Tjeu Foolen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tjeufoolen/iBOODHunter/issues"
+  },
+  "homepage": "https://github.com/tjeufoolen/iBOODHunter#readme",
+  "dependencies": {
+    "axios": "^0.21.4",
+    "colors": "^1.4.0"
+  }
 }
