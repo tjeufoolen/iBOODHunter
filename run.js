@@ -24,7 +24,10 @@ const getNewItem = async () => {
 
             if (!updateStatus()) getNewItem();
         })
-        .catch(err => handleError(err));
+        .catch(err => {
+            handleError(err);
+            getNewItem();
+        });
 }
 
 const waitUntillEnd = async () => {
