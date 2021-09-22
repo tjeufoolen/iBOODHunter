@@ -4,13 +4,11 @@ require('colors');
 // Data
 let offer = {};
 let newOffer = {};
-const timer = 5000; // Every 5 seconds
 
 /**
  * Methods
  */
-const getNewItem = () => {
-    process.stdout.write(".".blue);
+const getNewItem = async () => {
     axios.get("https://www.ibood.com/api/offers/website/nl/nl/slotitems")
         .then((res) => {
             const data = res.data;
@@ -19,28 +17,46 @@ const getNewItem = () => {
                 handleError("No usable data response");
 
             const items = data.items.map(item => item.offer).filter(item => item !== undefined);
-            const hunts = groupBy('sale_type', items)['hunt'];
+            const hunt = groupBy('sale_type', items)['hunt'][0];
+            newOffer = hunt;
 
-            newOffer = hunts[0];
-            updateStatus();
+            if (!updateStatus()) getNewItem();
         })
         .catch(err => handleError);
 }
 
-const updateStatus = () => {
-    if (offer.offer_id !== newOffer.offer_id) {
-        offer = newOffer;
+const waitUntillEnd = async () => {
+    const end = Date.parse(newOffer.end);
+    const now = Date.now();
 
-        console.log(''); // Newline
-        console.log('==='.red + ' NEW OFFER: ' + String(offer.short_title).green);
-        console.log('==='.red + ' PRICE: ' + parseCentsToEuros(offer.price.cents).green);
-        console.log('==='.red + ' URL: ' + `https://www.ibood.com${offer.url}`.yellow);
+    if (end > now) {
+        await delay(end - now);
+        getNewItem();
+    } else {
+        getNewItem();
     }
+}
+
+const updateStatus = () => {
+    if (offer.offer_id == newOffer.offer_id) return false;
+
+    offer = newOffer;
+
+    console.log(''); // Newline
+    console.log('==='.red + ' NEW OFFER: ' + String(offer.short_title).green);
+    console.log('==='.red + ' PRICE: ' + parseCentsToEuros(offer.price.cents).green);
+    console.log('==='.red + ' URL: ' + `https://www.ibood.com${offer.url}`.yellow);
+
+    waitUntillEnd();
+
+    return true;
 }
 
 /**
  * Helpers
  */
+const delay = ms => new Promise(res => setTimeout(res, ms));
+
 const handleError = (e) => console.log(`Got error: ${e.message}`.red);
 
 const groupBy = (key, array) => array.reduce((objectsByKeyValue, obj) => ({
@@ -55,6 +71,4 @@ const parseCentsToEuros = (cents) => `€ ${(Number(cents) / 100).toLocaleString
 /**
  * Main loop
  */
-console.log(`Hunting offers on ibood every ${timer / 1000} second(s)...`.yellow);
-
-setInterval(() => getNewItem(), timer);
+getNewItem();
