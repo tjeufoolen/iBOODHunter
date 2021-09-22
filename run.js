@@ -1,7 +1,9 @@
 const axios = require('axios');
 require('colors');
 
-// Data
+/**
+ * Local variables 
+ */
 let offer = {};
 let newOffer = {};
 
@@ -64,11 +66,11 @@ const groupBy = (key, array) => array.reduce((objectsByKeyValue, obj) => ({
 }), {});
 
 /**
- * Normalize data. 
+ * Normalize data 
  */
 const parseCentsToEuros = (cents) => `€ ${(Number(cents) / 100).toLocaleString("nl-NL")}-`;
 
 /**
- * Main loop
+ * Start
  */
 getNewItem();
