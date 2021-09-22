@@ -1,0 +1,13 @@
+{
+    "name": "ibood-hunter",
+    "description": "get the ibood hunts in terminal",
+    "author": "Tjeu Foolen",
+    "version": "1.0",
+    "dependencies": {
+        "axios": "^0.21.4",
+        "colors": "0.6.0"
+    },
+    "scripts": {
+        "start": "node run.js"
+    }
+}
